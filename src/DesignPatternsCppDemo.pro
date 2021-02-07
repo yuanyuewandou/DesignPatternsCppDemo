@@ -28,6 +28,7 @@ SOURCES += main.cpp \
     observer.cpp \
     decorator.cpp \
     bridge.cpp \
-    decorator2.cpp
+    decorator2.cpp \
+    commposition.cpp
 
 HEADERS +=
