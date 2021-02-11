@@ -9,6 +9,8 @@
 #include "decorator.cpp"
 #include "decorator2.cpp"
 #include "bridge.cpp"
+#include "commposition.cpp"
+#include "flyweight.cpp"
 
 void testSimpleFactory()
 {
@@ -181,7 +183,6 @@ void coffeeBar()
     cout << " Drink price: " << pDrink2->cost() << endl;
     cout << "check out coffee" << endl << endl;
     //结账
-
 }
 
 void testBridge()
@@ -203,7 +204,60 @@ void testBridge()
     pPhone->open();
     pPhone->call();
     pPhone->close();
- }
+}
+
+void testComposition()
+{
+    cout << "composition model" << endl;
+    OrganizationComponent* QingHuaUniversity = new University("Tqinghua university","china top1 university");
+    OrganizationComponent* ComputerCollege = new College("computer college","china top1 computer college");
+    OrganizationComponent* MathCollege = new College("math college","china top1 math college");
+    OrganizationComponent* SoftDepartment = new Department("soft department","soft is no 1");
+    OrganizationComponent* NetDepartment = new Department("net department","net is perfect");
+    OrganizationComponent* MathEduDepartment = new Department("math Education department","math is perfect");
+
+    QingHuaUniversity->add(ComputerCollege);
+    QingHuaUniversity->add(MathCollege);
+    ComputerCollege->add(SoftDepartment);
+    ComputerCollege->add(NetDepartment);
+    MathCollege->add(MathEduDepartment);
+    QingHuaUniversity->showInfo();
+    cout << "---------------------"<<endl;
+    ComputerCollege->remove(NetDepartment);
+    QingHuaUniversity->showInfo();
+}
+
+void testFlyWeight()
+{
+    cout << "fly weight test" << endl;
+    WebSiteFactory* webFactory = new WebSiteFactory();
+    //客户1需要以新闻形式发布的网站
+    WebSite*  web = webFactory->getWebSiteCategory(EN_WEB_TYPE::NEWS_WEB);
+    WebUser* user1 = new WebUser("user1");
+    web->use(user1);
+
+    //客户2需要以博客形式发布的网站
+    WebSite*  web2 = webFactory->getWebSiteCategory(EN_WEB_TYPE::BLOG_WEB);
+    WebUser* user2 = new WebUser("user2");
+    web2->use(user2);
+
+    //客户3需要以博客形式发布的网站
+    WebSite*  web3 = webFactory->getWebSiteCategory(EN_WEB_TYPE::BLOG_WEB);
+    WebUser* user3 = new WebUser("user3");
+    web3->use(user3);
+
+    //客户4需要以微信公众号形式发布的网站
+    WebSite*  web4 = webFactory->getWebSiteCategory(EN_WEB_TYPE::WECHAT_WEB);
+    WebUser* user4 = new WebUser("user4");
+    web4->use(user4);
+
+    //客户4需要以微信公众号形式发布的网站
+    WebSite*  web5 = webFactory->getWebSiteCategory(EN_WEB_TYPE::WECHAT_WEB);
+    WebUser* user5 = new WebUser("user5");
+    web5->use(user5);
+    //...
+    cout << "web count:" << webFactory->getCount() << endl;
+}
 
 int main(int argc, char *argv[])
 {
@@ -219,6 +273,8 @@ int main(int argc, char *argv[])
     //testObserve();
     //testDecorator();
     //testBridge();
-    coffeeBar();
+    //coffeeBar();
+    //testComposition();
+    testFlyWeight();
     return a.exec();
 }

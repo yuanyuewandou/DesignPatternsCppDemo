@@ -29,6 +29,7 @@ SOURCES += main.cpp \
     decorator.cpp \
     bridge.cpp \
     decorator2.cpp \
-    commposition.cpp
+    commposition.cpp \
+    flyweight.cpp
 
 HEADERS +=
