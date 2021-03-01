@@ -1,74 +1,89 @@
-/*设计模式
+/* 小鱼号的代码日志
+ * 设计模式
  * 模板方法
- * 定义一个操作中算法的框架
- * 而将一些步骤延迟到子类中。
- * 使得子类可以在不改变一个算法的结构
- * 即可重定义该算法的某些特定步骤。
- * 现实中的例子
- * 网购的方法分为
- * 下单，付款，发货，收货。
- * 缺点:
- * 需要每一个基本方法的不同实现提供一个子类
- * 如果父类中可变的基本方法太多，将会导致类的个数
- * 增加，系统更加庞大，设计也更加抽象
- */
+ * 现实例子：
+ * 打豆浆的步骤
+ *  1 选原料，2加配料，3浸泡，4打磨
+ * 原味豆浆 什么都不加
+ * 红豆豆浆 需要加红豆
+ * 花生豆浆 需要加花生
+ * ...
+ * 加了不同的配料浸泡时间可能不同。。
+*/
+
 #include<iostream>
 using namespace std;
 
-class OnlineShopping
+//抽象的豆浆
+class AbsSoyaMilk
 {
 public:
-    virtual void Order() = 0;
-    virtual void Pay() = 0;
-    virtual void SendGoods() = 0;
-    virtual void RecvGoods() = 0;
-    void shopping()
+    //制作豆浆
+    void make()
     {
-        Order();
-        Pay();
-        SendGoods();
-        RecvGoods();
+        select();
+        add();
+        soak();
+        beat();
+    }
+protected:
+    virtual void add() = 0; //2加配料
+    virtual void soak() = 0; //3 浸泡
+private:
+    //1选原料
+    void select()
+    {
+        cout << "select perfect soybeab" << endl;
+    }
+    //4打豆浆
+    void beat()
+    {
+         cout << "start beat soyamilk" << endl;
     }
 };
 
-class JDOnlineShopping :public OnlineShopping
+//原味豆浆
+class OriginalSoyaMilk : public AbsSoyaMilk
 {
-public:
-    void Order()
+    void add()
     {
-        cout << "jd order" << endl;
+        cout << "add nothing " << endl;
     }
-    void Pay()
+    void soak()
     {
-        cout << "wechat pay" << endl;
-    }
-    void SendGoods()
-    {
-        cout << "jd logistics send googs" << endl;
-    }
-    void RecvGoods()
-    {
-        cout << "recv goods from jd logistics" << endl;
+        cout << "soak 1 hour " << endl;
     }
 };
 
-class TaoBaoOnlineShopping :public OnlineShopping
+//红豆豆浆
+class RedBeansSoyaMilk : public AbsSoyaMilk
 {
-public:
-    void Order()
+    void add()
     {
-        cout << "tmall order" << endl;
+        cout << "add read beans " << endl;
     }
-    void Pay()
+    void soak()
     {
-        cout << "zhifubao pay" << endl;
-    }
-    void SendGoods()
-    {
-        cout << "cainiao logistics send googs" << endl;
-    }
-    void RecvGoods()
-    {
-        cout << "recv goods from cainiao logistics" << endl;
+        cout << "soak 1.5 hour " << endl;
     }
 };
+
+//花生豆浆
+class PeanutSoyaMilk : public AbsSoyaMilk
+{
+    void add()
+    {
+        cout << "add Peanut " << endl;
+    }
+    void soak()
+    {
+        cout << "soak 1.8 hour " << endl;
+    }
+};
+
+
+
+
+
+
+

@@ -9,8 +9,15 @@
 #include "decorator.cpp"
 #include "decorator2.cpp"
 #include "bridge.cpp"
-#include "commposition.cpp"
+//#include "commposition.cpp"
 #include "flyweight.cpp"
+#include "proxy.cpp"
+#include "visitor.cpp"
+#include "iterator.cpp"
+
+#include<iostream>
+#include<list>
+using namespace std;
 
 void testSimpleFactory()
 {
@@ -70,11 +77,19 @@ void testFacade()
 void testTemplateMethod()
 {
     cout << "TemplateMethod:" << endl;
-    OnlineShopping* pShopping = new JDOnlineShopping;
-    pShopping->shopping();
+    AbsSoyaMilk* soya = new OriginalSoyaMilk;
+    cout << "make Original soyamilk" << endl;
+    soya->make();
 
-    pShopping = new TaoBaoOnlineShopping;
-    pShopping->shopping();
+    cout << "=========================" << endl;
+    cout << "make readbeans soyamilk" << endl;
+    soya = new RedBeansSoyaMilk;
+    soya->make();
+
+    cout << "=========================" << endl;
+    cout << "make peanut soyamilk" << endl;
+    soya = new PeanutSoyaMilk;
+    soya->make();
 }
 
 void testStrategy()
@@ -208,23 +223,23 @@ void testBridge()
 
 void testComposition()
 {
-    cout << "composition model" << endl;
-    OrganizationComponent* QingHuaUniversity = new University("Tqinghua university","china top1 university");
-    OrganizationComponent* ComputerCollege = new College("computer college","china top1 computer college");
-    OrganizationComponent* MathCollege = new College("math college","china top1 math college");
-    OrganizationComponent* SoftDepartment = new Department("soft department","soft is no 1");
-    OrganizationComponent* NetDepartment = new Department("net department","net is perfect");
-    OrganizationComponent* MathEduDepartment = new Department("math Education department","math is perfect");
+//    cout << "composition model" << endl;
+//    OrganizationComponent* QingHuaUniversity = new University("Tqinghua university","china top1 university");
+//    OrganizationComponent* ComputerCollege = new College("computer college","china top1 computer college");
+//    OrganizationComponent* MathCollege = new College("math college","china top1 math college");
+//    OrganizationComponent* SoftDepartment = new Department("soft department","soft is no 1");
+//    OrganizationComponent* NetDepartment = new Department("net department","net is perfect");
+//    OrganizationComponent* MathEduDepartment = new Department("math Education department","math is perfect");
 
-    QingHuaUniversity->add(ComputerCollege);
-    QingHuaUniversity->add(MathCollege);
-    ComputerCollege->add(SoftDepartment);
-    ComputerCollege->add(NetDepartment);
-    MathCollege->add(MathEduDepartment);
-    QingHuaUniversity->showInfo();
-    cout << "---------------------"<<endl;
-    ComputerCollege->remove(NetDepartment);
-    QingHuaUniversity->showInfo();
+//    QingHuaUniversity->add(ComputerCollege);
+//    QingHuaUniversity->add(MathCollege);
+//    ComputerCollege->add(SoftDepartment);
+//    ComputerCollege->add(NetDepartment);
+//    MathCollege->add(MathEduDepartment);
+//    QingHuaUniversity->showInfo();
+//    cout << "---------------------"<<endl;
+//    ComputerCollege->remove(NetDepartment);
+//    QingHuaUniversity->showInfo();
 }
 
 void testFlyWeight()
@@ -259,6 +274,62 @@ void testFlyWeight()
     cout << "web count:" << webFactory->getCount() << endl;
 }
 
+void testProxy()
+{
+    MySystemProxy proxy("user","pwd");
+    proxy.run();
+}
+
+void testVisitor()
+{
+    cout << "visitor" << endl;
+    cout << "MangoTV I am singer"<< endl;
+    IAmSinger singer;
+    cout << "The audience entered the studio" << endl;
+    singer.attach(new YoungMan());
+    singer.attach(new MiddleMan());
+
+    gradeSys* grade = new SuccessGradeSys();
+    singer.display(grade);
+
+    cout << "=======================" << endl;
+
+    grade = new FailGradeSys();
+    singer.display(grade);
+
+    cout << "=======================" << endl;
+
+    grade = new WaitGradeSys();
+    singer.display(grade);
+}
+
+void printDepartment(Iterator* it)
+{
+    while(it->hasNext())
+    {
+        Department* partment = it->next();
+        cout << partment->getName() << endl;
+    }
+}
+
+void testIterator()
+{
+    vector<College*> collegeList;
+    College* college = new ComputerCollege("computer");
+    collegeList.push_back(college);
+    college = new InfoCollege("infomation");
+    collegeList.push_back(college);
+    auto it = collegeList.begin();
+    while(it != collegeList.end())
+    {
+        cout << "college name:" << (*it)->getName() << endl;
+        cout << "college department:" << endl;
+        printDepartment((*it)->creatorIterator());
+        cout << "=====================" << endl;
+        it++;
+    }
+}
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -275,6 +346,9 @@ int main(int argc, char *argv[])
     //testBridge();
     //coffeeBar();
     //testComposition();
-    testFlyWeight();
+    //testFlyWeight();
+    //testProxy();
+    //testVisitor();
+    testIterator();
     return a.exec();
 }

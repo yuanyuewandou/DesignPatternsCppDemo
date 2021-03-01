@@ -23,6 +23,7 @@ public:
 
 class MySystemProxy :public AbstractCommonInterface
 {
+public:
     MySystemProxy(string userName,string password)
     {
         mUserName = userName;
@@ -42,6 +43,7 @@ class MySystemProxy :public AbstractCommonInterface
        if(pSystem != nullptr)
            delete pSystem;
     }
+private:
     bool checkUserNameAndPassword()
     {
         return true;

@@ -30,6 +30,9 @@ SOURCES += main.cpp \
     bridge.cpp \
     decorator2.cpp \
     commposition.cpp \
-    flyweight.cpp
+    flyweight.cpp \
+    templatemethod.cpp \
+    visitor.cpp \
+    iterator.cpp
 
 HEADERS +=
