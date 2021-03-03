@@ -14,7 +14,7 @@
 #include "proxy.cpp"
 #include "visitor.cpp"
 #include "iterator.cpp"
-
+#include "mediator.cpp"
 #include<iostream>
 #include<list>
 using namespace std;
@@ -330,6 +330,17 @@ void testIterator()
     }
 }
 
+void testMediator()
+{
+    cout << "mediator patterns" << endl;
+    Mediator* mediator = new SmartHouseMediator();
+    SmartTV* tv = new SmartTV(mediator,"SmartTV");
+    SmartMic* mic = new SmartMic(mediator,"SmartMic");
+    SmartLight* light = new SmartLight(mediator,"SmartLight");
+    mic->OpenMic();
+}
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
@@ -349,6 +360,7 @@ int main(int argc, char *argv[])
     //testFlyWeight();
     //testProxy();
     //testVisitor();
-    testIterator();
+    //testIterator();
+    testMediator();
     return a.exec();
 }

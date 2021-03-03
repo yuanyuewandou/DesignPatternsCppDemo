@@ -33,6 +33,7 @@ SOURCES += main.cpp \
     flyweight.cpp \
     templatemethod.cpp \
     visitor.cpp \
-    iterator.cpp
+    iterator.cpp \
+    mediator.cpp
 
 HEADERS +=
