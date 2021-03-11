@@ -34,6 +34,14 @@ SOURCES += main.cpp \
     templatemethod.cpp \
     visitor.cpp \
     iterator.cpp \
-    mediator.cpp
+    mediator.cpp \
+    memento.cpp \
+    interpreter.cpp \
+    state.cpp \
+    stateactivity.cpp \
+    responsibilitychain.cpp \
+    prototype.cpp \
+    builder.cpp
 
-HEADERS +=
+HEADERS += \
+    stateactivity.h

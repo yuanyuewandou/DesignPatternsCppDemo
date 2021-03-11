@@ -15,10 +15,17 @@
 #include "visitor.cpp"
 #include "iterator.cpp"
 #include "mediator.cpp"
+#include "memento.cpp"
+#include "interpreter.cpp"
+#include "stateactivity.h"
+#include "responsibilityChain.cpp"
+#include "prototype.cpp"
+#include "builder.cpp"
 #include<iostream>
 #include<list>
 using namespace std;
 
+//简单工厂模式
 void testSimpleFactory()
 {
     cout << "simple factory test" << endl;
@@ -32,6 +39,7 @@ void testSimpleFactory()
     delete factory;
 }
 
+///工厂方法模式
 void testFactoryFunction()
 {
     cout << "factory function test" << endl;
@@ -47,6 +55,7 @@ void testFactoryFunction()
     delete fruit;
 }
 
+///抽象工厂
 void testAbstractFactory()
 {
     cout << "abstract factory test" << endl;
@@ -65,6 +74,7 @@ void testAbstractFactory()
     delete absfactory;
 }
 
+///外观模式
 void testFacade()
 {
     cout << "facade:" << endl;
@@ -74,6 +84,7 @@ void testFacade()
     pGame->onGameMode();
 }
 
+///模板方法
 void testTemplateMethod()
 {
     cout << "TemplateMethod:" << endl;
@@ -92,6 +103,7 @@ void testTemplateMethod()
     soya->make();
 }
 
+///策略模式
 void testStrategy()
 {
     cout << "Strategy:" << endl;
@@ -105,6 +117,7 @@ void testStrategy()
     pCharacter->useWeaponStrategy();
 }
 
+///命令模式
 void testCommand()
 {
     HandleClientProtocol* protocol = new HandleClientProtocol();
@@ -126,6 +139,7 @@ void testCommand()
     server->startHandle();
 }
 
+///观察者模式
 void testObserve()
 {
     //创建观察者
@@ -146,6 +160,7 @@ void testObserve()
     pBossA->notify();
 }
 
+///装饰器模式
 void testDecorator()
 {
     AbstractPlayer* player = new PlayerA();
@@ -158,6 +173,7 @@ void testDecorator()
     player->ShowStatus();
 }
 
+///装饰器模式
 void coffeeBar()
 {
     ///coffee shop
@@ -200,6 +216,7 @@ void coffeeBar()
     //结账
 }
 
+///桥模式
 void testBridge()
 {
     //获取手机(样式+品牌)
@@ -221,6 +238,7 @@ void testBridge()
     pPhone->close();
 }
 
+///组合模式
 void testComposition()
 {
 //    cout << "composition model" << endl;
@@ -242,6 +260,7 @@ void testComposition()
 //    QingHuaUniversity->showInfo();
 }
 
+///享元模式
 void testFlyWeight()
 {
     cout << "fly weight test" << endl;
@@ -274,12 +293,14 @@ void testFlyWeight()
     cout << "web count:" << webFactory->getCount() << endl;
 }
 
+///代理模式
 void testProxy()
 {
     MySystemProxy proxy("user","pwd");
     proxy.run();
 }
 
+///访问者模式
 void testVisitor()
 {
     cout << "visitor" << endl;
@@ -303,6 +324,7 @@ void testVisitor()
     singer.display(grade);
 }
 
+
 void printDepartment(Iterator* it)
 {
     while(it->hasNext())
@@ -311,7 +333,7 @@ void printDepartment(Iterator* it)
         cout << partment->getName() << endl;
     }
 }
-
+///迭代器模式
 void testIterator()
 {
     vector<College*> collegeList;
@@ -330,6 +352,7 @@ void testIterator()
     }
 }
 
+///中介者模式
 void testMediator()
 {
     cout << "mediator patterns" << endl;
@@ -340,6 +363,96 @@ void testMediator()
     mic->OpenMic();
 }
 
+///备忘录模式
+void testMemento()
+{
+    cout << "memento patterns" << endl;
+    Originator* originalObj = new Originator();
+    Caretaker* car = new Caretaker();
+    originalObj->setState("state1");
+    ///保存当前状态
+    car->add(originalObj->saveState());
+
+    originalObj->setState("state2");
+    ///保存当前状态
+    car->add(originalObj->saveState());
+
+    originalObj->setState("state3");
+    ///保存当前状态
+    car->add(originalObj->saveState());
+
+    originalObj->getState();
+    originalObj->getSatetFromMemento(car->get(0));
+    originalObj->getState();
+}
+
+///解释器模式
+void testInterpreter()
+{
+    cout << "interpreter patterns" << endl;
+    ///利用解释器模式计算表达式a+b-c
+    Calculator calc("a-b+c");
+    map<char,int> var;
+    var.insert(make_pair('a',10));
+    var.insert(make_pair('b',5));
+    var.insert(make_pair('c',7));
+    cout << calc.run(var) << endl;
+
+    map<char,int> var2;
+    var2.insert(make_pair('a',8));
+    var2.insert(make_pair('b',1));
+    var2.insert(make_pair('c',50));
+    cout << calc.run(var2) << endl;
+}
+
+///状态模式
+void testState()
+{
+    cout << "state patterns" << endl;
+    Activity act(5);
+    for(int i = 0; i < 20; i++)
+    {
+        act.dedcutMoney();
+        act.raffle();
+    }
+}
+
+///职责链模式
+void testResponsibilityChain()
+{
+     cout << "responsibility chain patterns" << endl;
+     PurchaseRequeset req(500000084);
+     Approver* pDepartmentApprover = new DepartmentApprover("department Director");
+     Approver* collegeApprover = new CollegeApprover("college director");
+     Approver* vicSchoolMasterApprover = new ViceSchoolMasterApprover("vic school master");
+     Approver* schoolMasterApprover = new SchoolMasterApprover("school master");
+     Approver* pApprover = new Approver("last approver");
+     ///设置责任链
+     pDepartmentApprover->setNextApprover(collegeApprover);
+     collegeApprover->setNextApprover(vicSchoolMasterApprover);
+     vicSchoolMasterApprover->setNextApprover(schoolMasterApprover);
+     schoolMasterApprover->setNextApprover(pApprover);
+
+     ///非环状 责任链 从最低级别开始处理请求
+     pDepartmentApprover->processRequest(req);
+}
+
+void testPrototype()
+{
+    cout << "prorotype patterns" << endl;
+    Animal* sheep = new Sheep("tom",12);
+    sheep->showInfo();
+    Animal* cloneSheep = sheep->clone();
+    cloneSheep->showInfo();
+}
+
+void testBuilder()
+{
+    HouseDirector *director = new HouseDirector();
+    CommonHouseBuilder* builder = new CommonHouseBuilder();
+    director->setBuilder(builder);
+    House* house = director->builderHouse();
+}
 
 int main(int argc, char *argv[])
 {
@@ -361,6 +474,12 @@ int main(int argc, char *argv[])
     //testProxy();
     //testVisitor();
     //testIterator();
-    testMediator();
+    //testMediator();
+    //testMemento();
+    //testInterpreter();
+    //testState();
+    //testResponsibilityChain();
+    //testPrototype();
+    testBuilder();
     return a.exec();
 }
